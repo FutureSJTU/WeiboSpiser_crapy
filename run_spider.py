@@ -12,11 +12,12 @@ from spiders.fan import FanSpider
 
 def crapy_spider():
     os.environ['SCRAPY_SETTINGS_MODULE'] = f'settings'
+    config_path = os.getcwd() + os.sep + 'config.json'
+    with open(config_path) as T:
+        config = json.loads(T.read())
     settings = get_project_settings()
     process = CrawlerProcess(settings)
-    config_path = os.getcwd() + os.sep + 'config.json'
-    with open(config_path) as f:
-        config = json.loads(f.read())
+
     if config['get_comment'] == 1:
         process.crawl(CommentSpider)
     if config['get_fan'] == 1:

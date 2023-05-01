@@ -13,16 +13,13 @@ FLAGS = flags.FLAGS
 
 class MongoDBPipeline(object):
     def __init__(self):
-        config = _get_config()
-        mongo_config = config['mongo_config']
-        db = pymongo.MongoClient(mongo_config['connection_string'])
-        # client = pymongo.MongoClient(MONGO_HOST, MONGO_PORT)
-        # db = client['weibo']
-        self.Users = db["Users"]
-        self.Tweets = db["Tweets"]
+        # config = _get_config()
+        # mongo_config = config['mongo_config']
+        # db = pymongo.MongoClient(mongo_config['connection_string'])
+        client = pymongo.MongoClient(MONGO_HOST, MONGO_PORT)
+        db = client['weibo']
         self.Comments = db["Comments"]
         self.Relationships = db["Relationships"]
-        self.Reposts = db["Reposts"]
 
     def process_item(self, item, spider):
         if spider.name == 'comment_spider':
@@ -31,12 +28,6 @@ class MongoDBPipeline(object):
             self.insert_item(self.Relationships, item)
         elif spider.name == 'follower_spider':
             self.insert_item(self.Relationships, item)
-        elif spider.name == 'user_spider':
-            self.insert_item(self.Users, item)
-        elif spider.name == 'tweet_spider':
-            self.insert_item(self.Tweets, item)
-        elif spider.name == 'repost_spider':
-            self.insert_item(self.Reposts, item)
         return item
     
 

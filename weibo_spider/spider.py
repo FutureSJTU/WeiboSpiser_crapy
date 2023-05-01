@@ -355,7 +355,16 @@ class Spider:
                     random_users = random.randint(*self.random_wait_pages)
                 user_count += 1
                 self.get_one_user(user_config)
-                run_spider.crapy_spider()   
+            # 将weibo_id_list写入文件
+            file_path = os.getcwd() + os.sep + 'weibo_spider' + os.sep + 'weibo_id_list.txt'
+            remove = open(file_path, "r+")  # 或者'**.csv'
+            remove.truncate()
+            for i in tqdm(self.weibo_id_list):
+                f = open(file_path, 'a')
+                f.write(str(i) + '\n')
+                f.close()
+            # 爬取评论\粉丝列表\关注列表
+            run_spider.crapy_spider()   
         except Exception as e:
             logger.exception(e)
 
