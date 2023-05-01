@@ -75,6 +75,8 @@ class Spider:
             'result_dir_name', 0)  # 结果目录名，取值为0或1，决定结果文件存储在用户昵称文件夹里还是用户id文件夹里
         self.cookie = config['cookie']
         self.get_comment = config['get_comment'] # 取值范围为0、1,程序默认值为0,代表不爬取微博评论,1代表爬取
+        self.get_fan = config['get_fan'] # 取值范围为0、1,程序默认值为0,代表不爬取粉丝信息,1代表爬取
+        self.get_follower = config['get_follower'] # 取值范围为0、1,程序默认值为0,代表不爬取关注信息,1代表爬取
         self.mysql_config = config.get('mysql_config')  # MySQL数据库连接配置，可以不填
 
         self.sqlite_config = config.get('sqlite_config')
@@ -353,25 +355,10 @@ class Spider:
                     random_users = random.randint(*self.random_wait_pages)
                 user_count += 1
                 self.get_one_user(user_config)
-
-            # 获取评论数据
-            if self.get_comment==1:
-                self.get_comment_info()   
+                run_spider.crapy_spider()   
         except Exception as e:
             logger.exception(e)
 
-    def get_comment_info(self):
-        # 将weibo_id_list写入文件
-        file_path = os.getcwd() + os.sep + 'weibo_spider' + os.sep + 'weibo_id_list.txt'
-        remove = open(file_path, "r+")  # 或者'**.csv'
-        remove.truncate()
-
-        for i in tqdm(self.weibo_id_list):
-            f = open(file_path, 'a')
-            f.write(str(i) + '\n')
-            f.close()
-        # 爬取评论
-        run_spider.comment_spider()
 
 def _get_config():
     """获取config.json数据"""

@@ -2,6 +2,8 @@
 # encoding: utf-8
 
 import re
+import os
+import json
 from scrapy import Spider
 from scrapy.selector import Selector
 from scrapy.http import Request
@@ -14,7 +16,10 @@ class FanSpider(Spider):
     base_url = "https://weibo.cn"
 
     def start_requests(self):
-        user_ids = ['1087770692', '1699432410', '1266321801']
+        config_path = os.getcwd() + os.sep + 'config.json'
+        with open(config_path) as f:
+            config = json.loads(f.read())
+        user_ids = config['user_id_list']
         urls = [f"{self.base_url}/{user_id}/fans?page=1" for user_id in user_ids]
         for url in urls:
             yield Request(url, callback=self.parse)

@@ -2,30 +2,26 @@
 # encoding: utf-8
 
 import os
-import sys
+import json
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from spiders.tweet import TweetSpider
 from spiders.comment import CommentSpider
 from spiders.follower import FollowerSpider
-from spiders.user import UserSpider
 from spiders.fan import FanSpider
-from spiders.repost import RepostSpider
 
-def comment_spider():
-    # mode = sys.argv[1]
+
+def crapy_spider():
     os.environ['SCRAPY_SETTINGS_MODULE'] = f'settings'
     settings = get_project_settings()
     process = CrawlerProcess(settings)
-    # mode_to_spider = {
-    #     'comment': CommentSpider,
-    #     'fan': FanSpider,
-    #     'follow': FollowerSpider,
-    #     'tweet': TweetSpider,
-    #     'user': UserSpider,
-    #     'repost': RepostSpider,
-    # }
-    process.crawl(CommentSpider)
-    # process.crawl(mode_to_spider[mode])
-    # the script will block here until the crawling is finished
+    config_path = os.getcwd() + os.sep + 'config.json'
+    with open(config_path) as f:
+        config = json.loads(f.read())
+    if config['get_comment'] == 1:
+        process.crawl(CommentSpider)
+    if config['get_fan'] == 1:
+        process.crawl(FanSpider)
+    if config['get_follower'] == 1:
+        process.crawl(FollowerSpider)
     process.start()
+

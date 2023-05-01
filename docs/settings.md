@@ -11,6 +11,9 @@ $ python3 -m weibo_spider
 ```json
 {
     "user_id_list": ["1669879400"],
+    "get_comment": 1,
+    "get_fan": 1,
+    "get_follower": 1,
     "filter": 1,
     "since_date": "2018-01-01",
     "end_date": "now",
@@ -60,6 +63,18 @@ user_id_list的值也可以是文件路径，我们可以把要爬的所有微�
 ```json
 "user_id_list": "user_id_list.txt",
 ```
+## 设置get_comment
+
+置1爬取评论，置0不爬取
+
+## 设置get_fan
+
+置1爬取粉丝列表，置0不爬取
+对于大v，建议置0
+
+## 设置get_follower
+
+置1爬取关注列表，置0不爬取
 
 ## 设置filter
 
