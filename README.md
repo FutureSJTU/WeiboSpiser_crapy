@@ -19,8 +19,6 @@
 - **转发**微博中的原始**图片**（可选）
 - **原创**微博中的**视频**（可选）
 - **转发**微博中的**视频**（可选）
-- **原创**微博**Live Photo**中的**视频**（[免cookie版](https://github.com/dataabc/weibo-crawler)特有）
-- **转发**微博**Live Photo**中的**视频**（[免cookie版](https://github.com/dataabc/weibo-crawler)特有）
 
 
 
@@ -37,19 +35,10 @@
 - 所在地：用户所在地
 - 学习经历：用户上学时学校的名字和时间
 - 工作经历：用户所属公司名字和时间
-- 阳光信用（免cookie版）：用户的阳光信用
-- 微博注册时间（免cookie版）：用户微博注册日期
 - 微博数：用户的全部微博数（转发微博+原创微博）
 - 关注数：用户关注的微博数量
 - 粉丝数：用户的粉丝数
 - 简介：用户简介
-- 主页地址（免cookie版）：微博移动版主页url
-- 头像url（免cookie版）：用户头像url
-- 高清头像url（免cookie版）：用户高清头像url
-- 微博等级（免cookie版）：用户微博等级
-- 会员等级（免cookie版）：微博会员用户等级，普通用户该等级为0
-- 是否认证（免cookie版）：用户是否认证，为布尔类型
-- 认证类型（免cookie版）：用户认证类型，如个人认证、企业认证、政府认证等
 - 认证信息：为认证用户特有，用户信息栏显示的认证信息
 
 ### 微博信息
@@ -68,14 +57,10 @@
 - 结果文件：保存在当前目录weibo文件夹下以用户昵称为名的文件夹里，名字为"user_id.csv"和"user_id.txt"的形式
 - 微博图片：原创微博中的图片和转发微博转发理由中的图片，保存在以用户昵称为名的文件夹下的img文件夹里
 - 微博视频：原创微博中的视频，保存在以用户昵称为名的文件夹下的video文件夹里
-- 微博bid（免cookie版）：为[免cookie版](https://github.com/dataabc/weibo-crawler)所特有，与本程序中的微博id是同一个值
-- 话题（免cookie版）：微博话题，即两个#中的内容，若存在多个话题，每个url以英文逗号分隔，若没有则值为''
-- @用户（免cookie版）：微博@的用户，若存在多个@用户，每个url以英文逗号分隔，若没有则值为''
-- 原始微博（免cookie版）：为转发微博所特有，是转发微博中那条被转发的微博，存储为字典形式，包含了上述微博信息中的所有内容，如微博id、微博内容等等
-
+- 微博评论，默认输出到mongodb数据库中，Comments簇下
 ## 示例
 
-如果想要知道程序的具体运行结果，可以查看[示例文档](https://github.com/dataabc/weiboSpider/blob/master/docs/example.md)，该文档介绍了爬取[迪丽热巴微博](https://weibo.cn/u/1669879400)的例子，并附有部分结果文件截图。
+如果想要知道程序的具体运行结果，可以查看[示例文档](https://github.com/FutureSJTU/WeiboSpiser_crapy/blob/main/docs/example.md)，该文档介绍了爬取[迪丽热巴微博](https://weibo.cn/u/1669879400)的例子，并附有部分结果文件截图。
 
 ## 运行环境
 
@@ -86,11 +71,11 @@
 
 ### 1.程序设置
 
-要了解程序设置，请查看[程序设置文档](https://github.com/dataabc/weiboSpider/blob/master/docs/settings.md)。
+要了解程序设置，请查看[程序设置文档](https://github.com/FutureSJTU/WeiboSpiser_crapy/blob/main/docs/settings.md)。
 
 ### 2.运行程序
 
-**源码安装**的用户可以在weiboSpider目录运行如下命令，**pip安装**的用户可以在任意有写权限的目录运行如下命令
+在weiboSpider_crapy目录运行如下命令
 
 ```bash
 $ python3 -m weibo_spider
@@ -175,21 +160,21 @@ $ python3 -m weibo_spider --u="1669879400,1223178222"
 
 ## 定期自动爬取微博（可选）
 
-要想让程序每隔一段时间自动爬取，且爬取的内容为新增加的内容（不包括已经获取的微博），请查看[定期自动爬取微博](https://github.com/dataabc/weiboSpider/blob/master/docs/automation.md)。
+要想让程序每隔一段时间自动爬取，且爬取的内容为新增加的内容（不包括已经获取的微博），请查看[定期自动爬取微博](https://github.com/FutureSJTU/WeiboSpiser_crapy/blob/main/docs/automation.md)。
 
 ## 如何获取cookie
 
-要了解获取cookie方法，请查看[cookie文档](https://github.com/dataabc/weiboSpider/blob/master/docs/cookie.md)。
+要了解获取cookie方法，请查看[cookie文档](https://github.com/FutureSJTU/WeiboSpiser_crapy/blob/main/docs/cookie.md)。
 
 ## 如何获取user_id
 
-要了解获取user_id方法，请查看[user_id文档](https://github.com/dataabc/weiboSpider/blob/master/docs/userid.md)，该文档介绍了如何获取一个及多个微博用户user_id的方法。
+要了解获取user_id方法，请查看[user_id文档](https://github.com/FutureSJTU/WeiboSpiser_crapy/blob/main/docs/userid.md)，该文档介绍了如何获取一个及多个微博用户user_id的方法。
 
 ## 常见问题
 
-如果运行程序的过程中出现错误，可以查看[常见问题](https://github.com/dataabc/weiboSpider/blob/master/docs/FAQ.md)页面，里面包含了最常见的问题及解决方法。如果出现的错误不在常见问题里，您可以通过[发issue](https://github.com/dataabc/weiboSpider/issues/new/choose)寻求帮助，我们会很乐意为您解答。
+如果运行程序的过程中出现错误，可以查看[常见问题](https://github.com/FutureSJTU/WeiboSpiser_crapy/blob/main/docs/FAQ.md)页面
 
 ## 注意事项
 
-1. user_id不能为爬虫微博的user_id。因为要爬微博信息，必须先登录到某个微博账号，此账号我们姑且称为爬虫微博。爬虫微博访问自己的页面和访问其他用户的页面，得到的网页格式不同，所以无法爬取自己的微博信息；如果想要爬取爬虫微博内容，可以参考[获取自身微博信息](https://github.com/dataabc/weiboSpider/issues/113)；
+1. user_id不能为爬虫微博的user_id。因为要爬微博信息，必须先登录到某个微博账号，此账号我们姑且称为爬虫微博。爬虫微博访问自己的页面和访问其他用户的页面，得到的网页格式不同，所以无法爬取自己的微博信息
 2. cookie有期限限制，大约三个月。若提示cookie错误或已过期，需要重新更新cookie。
