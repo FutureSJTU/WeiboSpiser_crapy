@@ -118,64 +118,6 @@ $ python3 -m weibo_spider --u="1669879400,1223178222"
 
 程序会获取user_id分别为1669879400和1223178222的微博用户的微博，后面会讲[如何获取user_id](#如何获取user_id)。该方式的所有user_id使用config.json中的since_date和end_date设置，通过修改它们的值可以控制爬取的时间范围。若config.json中的user_id_list是文件路径，每个命令行中的user_id都会自动保存到该文件内，且自动更新since_date；若不是路径，user_id会保存在当前目录的user_id_list.txt内，且自动更新since_date，若当前目录下不存在user_id_list.txt，程序会自动创建它。
 
-## 个性化定制程序（可选）
-
-本部分为可选部分，如果不需要个性化定制程序或添加新功能，可以忽略此部分。
-
-本程序主体代码位于weibo_spider.py文件，程序主体是一个 Spider 类，上述所有功能都是通过在main函数调用 Spider 类实现的，默认的调用代码如下：
-
-```python
-        config = get_config()
-        wb = Spider(config)
-        wb.start()  # 爬取微博信息
-```
-
-用户可以按照自己的需求调用或修改 Spider 类。通过执行本程序，我们可以得到很多信息。
-
-<details>
-
-<summary>点击查看详情</summary>
-
-- wb.user['nickname']：用户昵称；
-- wb.user['gender']：用户性别；
-- wb.user['location']：用户所在地；
-- wb.user['birthday']：用户出生日期；
-- wb.user['description']：用户简介；
-- wb.user['verified_reason']：用户认证；
-- wb.user['talent']：用户标签；
-- wb.user['education']：用户学习经历；
-- wb.user['work']：用户工作经历；
-- wb.user['weibo_num']：微博数；
-- wb.user['following']：关注数；
-- wb.user['followers']：粉丝数；
-
-</details>
-
-**wb.weibo**：除不包含上述信息外，wb.weibo包含爬取到的所有微博信息，如**微博id**、**微博正文**、**原始图片url**、**发布位置**、**发布时间**、**发布工具**、**点赞数**、**转发数**、**评论数**等。如果爬的是全部微博(原创+转发)，除上述信息之外，还包含被**转发微博原始图片url**、**是否为原创微博**等。wb.weibo是一个列表，包含了爬取的所有微博信息。wb.weibo[0]为爬取的第一条微博，wb.weibo[1]为爬取的第二条微博，以此类推。当filter=1时，wb.weibo[0]为爬取的第一条**原创**微博，以此类推。wb.weibo[0]['id']为第一条微博的id，wb.weibo[0]['content']为第一条微博的正文，wb.weibo[0]['publish_time']为第一条微博的发布时间，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
-
-<details>
-
-<summary>详情</summary>
-
-若目标微博用户存在微博，则：
-
-- id：存储微博id。如wb.weibo[0]['id']为最新一条微博的id；
-- content：存储微博正文。如wb.weibo[0]['content']为最新一条微博的正文；
-- article_url：存储微博中头条文章的url。如wb.weibo[0]['article_url']为最新一条微博的头条文章url，若微博中不存在头条文章，则值为''；
-- original_pictures：存储原创微博的原始图片url和转发微博转发理由中的图片url。如wb.weibo[0]['original_pictures']为最新一条微博的原始图片url，若该条微博有多张图片，则存储多个url，以英文逗号分割；若该微博没有图片，则值为"无"；
-- retweet_pictures：存储被转发微博中的原始图片url。当最新微博为原创微博或者为没有图片的转发微博时，则值为"无"，否则为被转发微博的图片url。若有多张图片，则存储多个url，以英文逗号分割；
-- publish_place：存储微博的发布位置。如wb.weibo[0]['publish_place']为最新一条微博的发布位置，如果该条微博没有位置信息，则值为"无"；
-- publish_time：存储微博的发布时间。如wb.weibo[0]['publish_time']为最新一条微博的发布时间；
-- up_num：存储微博获得的点赞数。如wb.weibo[0]['up_num']为最新一条微博获得的点赞数；
-- retweet_num：存储微博获得的转发数。如wb.weibo[0]['retweet_num']为最新一条微博获得的转发数；
-- comment_num：存储微博获得的评论数。如wb.weibo[0]['comment_num']为最新一条微博获得的评论数；
-- publish_tool：存储微博的发布工具。如wb.weibo[0]['publish_tool']为最新一条微博的发布工具。
-
-</details>
-
-## 定期自动爬取微博（可选）
-
-要想让程序每隔一段时间自动爬取，且爬取的内容为新增加的内容（不包括已经获取的微博），请查看[定期自动爬取微博](https://github.com/dataabc/weiboSpider/blob/master/docs/automation.md)。
 
 ## 如何获取cookie
 
