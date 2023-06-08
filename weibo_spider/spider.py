@@ -40,6 +40,7 @@ logger = logging.getLogger('spider')
 class Spider:
     def __init__(self, config):
         """Weibo类初始化"""
+        self.get_weibo = config['get_weibo']  # 是否爬取微博
         self.filter = config[
             'filter']  # 取值范围为0、1,程序默认值为0,代表要爬取用户的全部微博,1代表只爬取用户的原创微博
         since_date = config['since_date']
@@ -325,14 +326,15 @@ class Spider:
             # 下载用户头像相册中的图片。
             if self.pic_download:
                 self.download_user_avatar(user_config['user_uri'])
-
-            for weibos in self.get_weibo_info():
-                self.write_weibo(weibos)
-                self.got_num += len(weibos)
-            if not self.filter:
-                logger.info(u'共爬取' + str(self.got_num) + u'条微博')
-            else:
-                logger.info(u'共爬取' + str(self.got_num) + u'条原创微博')
+            # 如果get_weibo置0，则不爬取微博，只下载用户信息
+            if self.get_weibo:
+                for weibos in self.get_weibo_info():
+                    self.write_weibo(weibos)
+                    self.got_num += len(weibos)
+                if not self.filter:
+                    logger.info(u'共爬取' + str(self.got_num) + u'条微博')
+                else:
+                    logger.info(u'共爬取' + str(self.got_num) + u'条原创微博')
             logger.info(u'信息抓取完毕')
             logger.info('*' * 100)
         except Exception as e:

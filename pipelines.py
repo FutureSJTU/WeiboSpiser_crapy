@@ -17,9 +17,14 @@ class MongoDBPipeline(object):
         # mongo_config = config['mongo_config']
         # db = pymongo.MongoClient(mongo_config['connection_string'])
         client = pymongo.MongoClient(MONGO_HOST, MONGO_PORT)
-        db = client['weibo']
+        config_path = os.getcwd() + os.sep + 'config.json'
+        with open(config_path) as T:
+            config = json.loads(T.read())
+        db_name = config['mongo_db_name']
+        db = client[db_name]
         self.Comments = db["Comments"]
         self.Relationships = db["Relationships"]
+        self.Reposts = db["Reposts"]
 
     def process_item(self, item, spider):
         if spider.name == 'comment_spider':

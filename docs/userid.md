@@ -14,3 +14,5 @@
 ## 如何获取大量user_id
 
 [如何获取user_id](#如何获取user_id)部分可以获得一个user_id，<https://github.com/dataabc/weibo-follow>可以利用这一个user_id，获取该user_id微博用户关注人的user_id，一个user_id最多可以获得200个user_id，并写入user_id_list.txt文件。程序支持读文件，利用这200个user_id，可以获得最多200X200=40000个user_id。再利用这40000个user_id可以得到40000X200=8000000个user_id，如此反复，以此类推，可以获得大量user_id。本项目也支持读文件，将上述程序的结果文件user_id_list.txt路径赋值给本项目config.json的user_id_list参数，就可以获得这些user_id用户所发布的大量微博。
+
+

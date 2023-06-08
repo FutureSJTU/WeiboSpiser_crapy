@@ -1,7 +1,8 @@
 import copy
 import logging
 import sys
-
+import json
+import os
 from .writer import Writer
 
 logger = logging.getLogger('spider.mongo_writer')
@@ -13,7 +14,11 @@ class MongoWriter(Writer):
         self.connection_string = mongo_config['connection_string']
         self.dba_name = mongo_config.get('dba_name', None)
         self.dba_password = mongo_config.get('dba_password', None)
-
+        config_path = os.getcwd() + os.sep + 'config.json'
+        with open(config_path) as T:
+            config = json.loads(T.read())
+        self.db_name = config['mongo_db_name']
+        
     def _info_to_mongodb(self, collection, info_list):
         """将爬取的信息写入MongoDB数据库"""
         try:
@@ -31,8 +36,8 @@ class MongoWriter(Writer):
                 client.admin.authenticate(
                     self.dba_name, self.dba_password, mechanism='SCRAM-SHA-1'
                 )
-
-            db = client['weibo']
+            
+            db = client[self.db_name]
             collection = db[collection]
             new_info_list = copy.deepcopy(info_list)
             for info in new_info_list:

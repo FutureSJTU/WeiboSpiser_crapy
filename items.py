@@ -57,6 +57,7 @@ class CommentItem(Item):
     """
     _id = Field()
     comment_user_id = Field()  # 评论用户的id
+    reply_user_name = Field()  # 被回复用户的用户名
     content = Field()  # 评论的内容
     weibo_id = Field()  # 评论的微博的id
     created_at = Field()  # 评论发表时间
