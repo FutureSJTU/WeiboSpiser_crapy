@@ -14,3 +14,6 @@ weibo.db
 *.log
 
 .idea
+
+weibo_id_list.txt
+user_id_list.txt
