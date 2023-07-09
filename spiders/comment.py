@@ -9,7 +9,7 @@ from scrapy.http import Request
 import time
 from items import CommentItem
 from spiders.utils import extract_comment_content, time_fix
-
+from pymongo import MongoClient
 
 class CommentSpider(Spider):
     name = "comment_spider"
@@ -57,6 +57,20 @@ class CommentSpider(Spider):
                 replied_user_name = comment_node.xpath('.//span[@class="ctt"]/a[contains(@href,"/n/")]/text()')[0]
                 comment_item['replied_user_name'] = replied_user_name[1:]
                 print(comment_item['replied_user_name'])
+                # # 从数据库中找到被回复者的id
+                # config_path = os.getcwd() + os.sep + 'config.json'
+                # with open(config_path) as T:
+                #     config = json.loads(T.read())
+                # client = MongoClient()
+                # db = client[config['mongo_db_name']]
+                # collection = db['Comments']
+                # for doc1 in collection.find():
+                # # 如果找到了评论的用户名与被回复者的用户名相同的评论
+                #     if doc1['comment_user_name'] == comment_item['replied_user_name']:
+                #     # 将这条评论的用户id填入到这条评论的被回复者id中
+                #         comment_item['replied_user_id'] =doc1['comment_user_id']
+                #         print(comment_item['获取到被回复者id'])
+                #     continue
             else:
                 comment_item['replied_user_name'] = ''
             comment_item['replied_user_id'] = ''         

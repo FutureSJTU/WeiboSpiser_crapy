@@ -45,10 +45,14 @@ class UserItem(Item):
 
 class RelationshipItem(Item):
     """ 用户关系，只保留与关注的关系 """
-    _id = Field()
+    user_id = Field()
     fan_id = Field()  # 关注者,即粉丝的id
     followed_id = Field()  # 被关注者的id
     crawl_time = Field()  # 抓取时间戳
+    
+    # user_id = Field()
+    # fan_id_list = Field()  # 关注者,即粉丝的id列表
+    # follow_id_list = Field()  # 被关注者的id列表
 
 
 class CommentItem(Item):

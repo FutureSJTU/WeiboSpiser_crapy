@@ -8,6 +8,7 @@ import os
 import random
 import shutil
 import sys
+from pymongo import MongoClient
 
 from datetime import date, datetime, timedelta
 from time import sleep
@@ -43,6 +44,7 @@ class Spider:
         self.get_weibo = config['get_weibo']  # 是否爬取微博
         self.filter = config[
             'filter']  # 取值范围为0、1,程序默认值为0,代表要爬取用户的全部微博,1代表只爬取用户的原创微博
+        self.max_page = config['max_page'] # 爬取的最大页数
         since_date = config['since_date']
         if isinstance(since_date, int):
             since_date = date.today() - timedelta(since_date)
@@ -133,6 +135,7 @@ class Spider:
         self.user = User()  # 存储爬取到的用户信息
         self.got_num = 0  # 存储爬取到的微博数
         self.weibo_id_list = []  # 存储爬取到的所有微博id
+        self.mongo_db_name = config['mongo_db_name']  # MongoDB数据库名称
 
     def write_weibo(self, weibos):
         """将爬取到的信息写入文件或数据库"""
@@ -171,17 +174,20 @@ class Spider:
                 page_num = IndexParser(
                     self.cookie,
                     self.user_config['user_uri']).get_page_num()  # 获取微博总页数
+
+                if self.max_page < page_num:
+                    page_num = self.max_page
                 self.page_count += 1
-                if self.page_count > 2 and (self.page_count +
-                                            page_num) > self.global_wait[0][0]:
-                    wait_seconds = int(
-                        self.global_wait[0][1] *
-                        min(1, self.page_count / self.global_wait[0][0]))
-                    logger.info(u'即将进入全局等待时间，%d秒后程序继续执行' % wait_seconds)
-                    for i in tqdm(range(wait_seconds)):
-                        sleep(1)
-                    self.page_count = 0
-                    self.global_wait.append(self.global_wait.pop(0))
+                # if self.page_count > 2 and (self.page_count +
+                #                             page_num) > self.global_wait[0][0]:
+                #     wait_seconds = int(
+                #         self.global_wait[0][1] *
+                #         min(1, self.page_count / self.global_wait[0][0]))
+                #     logger.info(u'即将进入全局等待时间，%d秒后程序继续执行' % wait_seconds)
+                #     for i in tqdm(range(wait_seconds)):
+                #         sleep(1)
+                #     self.page_count = 0
+                #     self.global_wait.append(self.global_wait.pop(0))
                 page1 = 0
                 random_pages = random.randint(*self.random_wait_pages)
                 for page in tqdm(range(1, page_num + 1), desc='Progress'):
@@ -316,6 +322,15 @@ class Spider:
         """获取一个用户的微博"""
         try:
             self.get_user_info(user_config['user_uri'])
+            # 如果数据库中已经有该用户信息，则跳过该用户
+            # 连接数据库
+            client = MongoClient()
+            db = client[self.mongo_db_name]
+            user = db['user']
+            if user.find_one({'id': user_config['user_uri']}):
+                logger.info(u'用户%s已存在，跳过该用户...' % user_config['user_uri'])
+                return
+
             logger.info(self.user)
             logger.info('*' * 100)
 

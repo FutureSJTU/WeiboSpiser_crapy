@@ -33,6 +33,8 @@ class MongoDBPipeline(object):
             self.insert_item(self.Relationships, item)
         elif spider.name == 'follower_spider':
             self.insert_item(self.Relationships, item)
+        elif spider.name == 'relationship_spider':
+            self.insert_item(self.Relationships, item)
         return item
     
 

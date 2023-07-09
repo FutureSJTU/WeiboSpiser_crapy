@@ -42,5 +42,5 @@ class FanSpider(Spider):
             relationships_item['crawl_time'] = int(time.time())
             relationships_item["fan_id"] = uid
             relationships_item["followed_id"] = ID
-            relationships_item["_id"] = 'fans' + '-' + uid + '-' + ID
+            relationships_item["user_id"] = ID
             yield relationships_item
